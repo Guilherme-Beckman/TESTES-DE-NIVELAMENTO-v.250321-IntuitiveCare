@@ -6,6 +6,8 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.springframework.stereotype.Service;
 
+import com.intituitivecare.webscraping.exceptions.scraping.ErrorWhileFetchingPageContentException;
+
 
 @Service
 public class ScraperService {
@@ -15,8 +17,7 @@ public class ScraperService {
 			Document doc = Jsoup.connect(URL).get();
 			return doc.html();
 		} catch (IOException e) {
-			e.printStackTrace();
-			return null;
+			throw new ErrorWhileFetchingPageContentException();
 		}
 	}
 
