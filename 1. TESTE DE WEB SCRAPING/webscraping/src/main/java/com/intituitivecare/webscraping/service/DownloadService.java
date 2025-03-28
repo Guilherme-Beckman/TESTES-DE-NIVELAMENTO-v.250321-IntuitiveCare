@@ -11,6 +11,9 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.intituitivecare.webscraping.exceptions.download.ErrorWhileDownloadFilesException;
+import com.intituitivecare.webscraping.exceptions.scraping.ErrorWhileFetchingPageContentException;
+
 @Service 
 public class DownloadService {
 	private final String downloadDir;
@@ -48,8 +51,7 @@ public class DownloadService {
 			
 			return downloadedFiles;
 		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
+			throw new ErrorWhileDownloadFilesException();
 		}
 	}
 
