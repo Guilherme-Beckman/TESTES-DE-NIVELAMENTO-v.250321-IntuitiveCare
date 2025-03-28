@@ -1,5 +1,8 @@
 package com.intituitivecare.webscraping.service;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.nio.file.Files;
@@ -42,7 +45,13 @@ public class DownloadServiceTest {
 		//ai eu chamo um metodo para fazer o download
 		List<File> downloadedFiles = downloadService.downloadFiles(pdfLinks);
 		
-
+		assertNotNull(downloadedFiles, "Os arquivos não podem ser nulos");
+		assertEquals(2, downloadedFiles.size(), "A lista de pdfs baixados deve conter "
+				+ "exatamente 2 elementos");
+		assertTrue(downloadedFiles.get(0).exists(), "O primeiro arquivo deve existir");
+		assertTrue(downloadedFiles.get(1).exists(), "O segundo arquivo deve existir");
+		assertTrue(downloadedFiles.get(1).getName().endsWith(".pdf"), "O primeiro arquivo deve ser um pdf");
+		assertTrue(downloadedFiles.get(1).getName().endsWith(".pdf"), "O Segundo arquivo deve ser um pdf");
 	}
 	
 }
