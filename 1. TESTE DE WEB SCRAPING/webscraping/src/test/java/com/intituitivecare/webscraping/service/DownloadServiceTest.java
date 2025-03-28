@@ -10,7 +10,6 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.assertj.core.internal.Arrays;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
@@ -50,7 +49,7 @@ public class DownloadServiceTest {
 				+ "exatamente 2 elementos");
 		assertTrue(downloadedFiles.get(0).exists(), "O primeiro arquivo deve existir");
 		assertTrue(downloadedFiles.get(1).exists(), "O segundo arquivo deve existir");
-		assertTrue(downloadedFiles.get(1).getName().endsWith(".pdf"), "O primeiro arquivo deve ser um pdf");
+		assertTrue(downloadedFiles.get(0).getName().endsWith(".pdf"), "O primeiro arquivo deve ser um pdf");
 		assertTrue(downloadedFiles.get(1).getName().endsWith(".pdf"), "O Segundo arquivo deve ser um pdf");
 	}
 	
