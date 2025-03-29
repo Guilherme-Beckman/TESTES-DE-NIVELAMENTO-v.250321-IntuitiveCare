@@ -10,10 +10,12 @@ import java.util.zip.ZipOutputStream;
 
 import org.springframework.stereotype.Service;
 
+import com.intituitivecare.webscraping.exceptions.compress.ErrorWhileCompressFilesException;
+
 @Service
 public class CompressorService {
 
-	public File compressFiles(List<File> filesList, String absolutePath) throws IOException {
+	public File compressFiles(List<File> filesList, String absolutePath) {
 		File zipFile = new File(absolutePath);
 		
 		try (FileOutputStream fileOutputStream = new FileOutputStream(zipFile);
@@ -23,6 +25,8 @@ public class CompressorService {
 				addFileOnZip(file, outputStream);
 			}
 			
+		} catch (IOException e) {
+			throw new ErrorWhileCompressFilesException();
 		} 
 		return zipFile;
 	}
