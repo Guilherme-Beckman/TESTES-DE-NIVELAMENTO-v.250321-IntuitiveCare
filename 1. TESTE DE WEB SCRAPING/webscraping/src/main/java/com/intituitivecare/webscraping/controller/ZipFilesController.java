@@ -23,7 +23,7 @@ public class ZipFilesController {
 
 	@GetMapping
 	public ResponseEntity<Resource> getZipedFile() {
-		File zippedFile = zipService.getZipFIles();
+		File zippedFile = zipService.getZipFiles();
 		Resource resource = new FileSystemResource(zippedFile);
 		return ResponseEntity.ok()
 				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + zippedFile.getName())
