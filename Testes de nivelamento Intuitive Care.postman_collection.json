@@ -1,0 +1,35 @@
+{
+	"info": {
+		"_postman_id": "0af42d87-f1d7-4f54-9739-a93ecc634a8e",
+		"name": "Testes de nivelamento Intuitive Care",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "31833083"
+	},
+	"item": [
+		{
+			"name": "Teste 1",
+			"item": [
+				{
+					"name": "Get Zip Files",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/zip",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"zip"
+							]
+						},
+						"description": "### **Endpoint**: `/zip`\n\n#### **Método HTTP**: `GET`\n\n#### **Descrição**:\n\nEste endpoint permite que o cliente faça o download de um arquivo ZIP gerado pelo serviço. O arquivo contém os resultados de um processo, como um conjunto de arquivos coletados e compactados em formato ZIP.\n\n#### **URL**: `http://localhost:8080/zip`\n\n#### **Parâmetros da Requisição**:\n\n- **Nenhum parâmetro na URL** ou no **corpo da requisição**.\n    \n\n#### **Exemplo de Requisição**:\n\n``` bash\nGET http://localhost:8080/zip\n\n ```\n\n#### **Resposta**:\n\n- **Código de Status**: `200 OK`\n    \n- **Corpo da Resposta**: O corpo da resposta contém o arquivo ZIP solicitado como um anexo de download.\n    \n\n#### **Headers de Resposta**:\n\n- `Content-Disposition`: Define o arquivo como anexo e especifica o nome do arquivo a ser baixado. Exemplo: `attachment; filename=nome_do_arquivo.zip`\n    \n- `Content-Type`: Especifica o tipo de mídia do conteúdo como `application/octet-stream`, que indica que o arquivo é binário.\n    \n\n#### **Exemplo de Resposta**:\n\n``` http\nHTTP/1.1 200 OK\nContent-Disposition: attachment; filename=arquivo.zip\nContent-Type: application/octet-stream\nContent-Length: <tamanho_do_arquivo>\n\n ```\n\nO corpo da resposta conterá o arquivo compactado em formato ZIP.\n\n#### **Serviço Interno Utilizado**:\n\nO endpoint utiliza o `ZipService`, que é responsável por gerar e retornar o arquivo ZIP a ser baixado.\n\n#### **Notas**:\n\n- O arquivo gerado pode conter múltiplos arquivos que foram compactados em um único ZIP.\n    \n- O download será iniciado automaticamente no navegador ou outro cliente HTTP, já que o arquivo é enviado como um anexo.\n    \n\n#### **Erros Potenciais**:\n\n- `500 Internal Server Error`: Caso ocorra algum erro ao gerar o arquivo ZIP no servidor."
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
