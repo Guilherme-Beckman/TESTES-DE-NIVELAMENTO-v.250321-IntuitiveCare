@@ -14,7 +14,7 @@ import com.intituitivecare.webscraping.exceptions.scraping.ErrorWhileFetchingPag
 
 @Service
 public class ScraperService {
-	private String URL = "https://www.gov.br/ans/pt-br/acesso-a-informacao/participacao-da-sociedade/atualizacao-do-rol-de-procedimentos";
+	private static final String URL = "https://www.gov.br/ans/pt-br/acesso-a-informacao/participacao-da-sociedade/atualizacao-do-rol-de-procedimentos";
 
 	private Document connectToUrl() throws IOException {
 		return Jsoup.connect(URL).get();
