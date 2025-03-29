@@ -12,7 +12,6 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.intituitivecare.webscraping.exceptions.download.ErrorWhileDownloadFilesException;
-import com.intituitivecare.webscraping.exceptions.scraping.ErrorWhileFetchingPageContentException;
 
 @Service 
 public class DownloadService {
