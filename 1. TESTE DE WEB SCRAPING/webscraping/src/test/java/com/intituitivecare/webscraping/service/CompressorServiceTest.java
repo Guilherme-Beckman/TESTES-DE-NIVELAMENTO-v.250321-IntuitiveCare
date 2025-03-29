@@ -38,7 +38,7 @@ public class CompressorServiceTest {
 		CompressorService compressorService =  new CompressorService();
 		
 		//chamar o metodo e pegar o arquivo zipado
-		File zipFile = compressorService.compressFiles(filesList);
+		File zipFile = compressorService.compressFiles(filesList, zipDir.getAbsolutePath());
 		
         assertNotNull(zipFile, "O arquivo zip não deve ser nulo");
         assertTrue(zipFile.exists(), "O arquivo zip deve existir");
