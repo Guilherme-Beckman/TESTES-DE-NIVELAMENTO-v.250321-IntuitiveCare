@@ -14,7 +14,7 @@ import com.intituitivecare.webscraping.exceptions.scraping.ErrorWhileFetchingPag
 
 @Service
 public class ScraperService {
-	private String URL = "https://www.gov.br/ans/pt-br/acesso-a-informacao/participacao-da-sociedade/atualizacao-do-rol-de-procedimentos";
+	private static final String URL = "https://www.gov.br/ans/pt-br/acesso-a-informacao/participacao-da-sociedade/atualizacao-do-rol-de-procedimentos";
 
 	private Document connectToUrl() throws IOException {
 		return Jsoup.connect(URL).get();
@@ -22,22 +22,30 @@ public class ScraperService {
 
 	public List<String> fetchPdfLinks() {
 		try {
-			List<String> findedLinks = new ArrayList<>();
 			Document doc = connectToUrl();
 			Elements downloadLinks = doc.select("li a");
 
-			for (Element link : downloadLinks) {
-				String href = link.attr("href");
-				String linkText = link.text();
-				if (linkText.contains("Anexo") && href.endsWith(".pdf")) {
-					findedLinks.add(href);
-				}
-			}
-			return findedLinks;
+			return extractValidPdfLinks(downloadLinks);
 
 		} catch (IOException e) {
 			throw new ErrorWhileFetchingPageContentException();
 		}
+	}
+
+	private List<String> extractValidPdfLinks(Elements elements) {
+		List<String> findedLinks = new ArrayList<>();
+		for (Element link : elements) {
+			String href = link.attr("href");
+			String linkText = link.text();
+			if (isValidPdfLink(linkText, href)) {
+				findedLinks.add(href);
+			}
+		}
+		return findedLinks;
+	}
+
+	private boolean isValidPdfLink(String linkText, String linkUrl) {
+		return linkText.contains("Anexo") && linkUrl.endsWith(".pdf");
 	}
 
 }
