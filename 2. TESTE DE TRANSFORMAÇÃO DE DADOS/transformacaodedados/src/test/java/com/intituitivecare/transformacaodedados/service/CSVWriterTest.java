@@ -78,7 +78,6 @@ public class CSVWriterTest {
 		csvService.writeCSV(table,csvFile.toString());
 		//ler o conteudo e verificar se esta tudo correto
 		String content = Files.readString(csvFile); // Trim the content
-		System.out.println(content); // This prints the content generated
 		String expected = """
 			    "PROCEDIMENTO","RN (alteração)","VIGÊNCIA","Seg. Odontológica","Seg. Ambulatorial","HCO","HSO","REF","PAC","DUT","SUBGRUPO","GRUPO","CAPÍTULO"
 			    "CONSULTA ODONTOLÓGICA PARA AVALIAÇÃO TÉCNICA DE AUDITORIA","","","Seg. Odontológica","","","","","","","CONSULTAS, VISITAS HOSPITALARES OU ACOMPANHAMENTO DE PACIENTES","PROCEDIMENTOS GERAIS","PROCEDIMENTOS GERAIS"

@@ -16,9 +16,7 @@ public class CSVService {
                 // Se houver vírgulas no conteúdo, é recomendável encapsular o valor entre aspas
                 List<String> formattedCells = new ArrayList<>();
                 for (String cell : row) {
-
                         formattedCells.add("\"" + cell + "\"");
-                  
                 }
                 csvWriter.append(String.join(",", formattedCells));
                 csvWriter.append("\n");
