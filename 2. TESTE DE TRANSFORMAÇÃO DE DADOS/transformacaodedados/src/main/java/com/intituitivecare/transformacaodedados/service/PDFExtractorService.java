@@ -20,6 +20,7 @@ public class PDFExtractorService {
  
     public List<List<String>> extractTableData(File pdf) {
         List<List<String>> tableData = new ArrayList<>();
+        
         try (PDDocument document = Loader.loadPDF(pdf)) {
             boolean headerProcessed = false; 
             SpreadsheetExtractionAlgorithm sea = new SpreadsheetExtractionAlgorithm();
@@ -44,7 +45,11 @@ public class PDFExtractorService {
                         for (int h = 0; h < cells.size(); h++) {
                             RectangularTextContainer cellContent = cells.get(h);
                             String text = cellContent.getText().replace("\r", " ").trim();
-                            
+                            if (text.equalsIgnoreCase("OD")) {
+                                text = "Seg. Odontológica";
+                            } else if (text.equalsIgnoreCase("AMB")) {
+                                text = "Seg. Ambulatorial";
+                            }
                             if (h == cells.size() - 1) {
                                 rowTable.add(text); 
                             } else {
@@ -70,7 +75,6 @@ public class PDFExtractorService {
     }
  
     private void printTableData(List<List<String>> tableData) {
-        int fixedColumnWidth = 20; 
  
         for (List<String> row : tableData) {
             for (int i = 0; i < row.size(); i++) {
