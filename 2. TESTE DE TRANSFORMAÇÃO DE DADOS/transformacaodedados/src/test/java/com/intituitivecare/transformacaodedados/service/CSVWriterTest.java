@@ -76,9 +76,9 @@ public class CSVWriterTest {
 		//output file 
 		Path csvFile = tempDir.resolve("output.csv");
 		//instanciar o servico
-		CSVWriter csvWriter = new CsvWriter()
+		CSVService csvService = new CSVService();
 		//chamar o metodo
-		csvWriter.writeCSV(table,csvFile.toString());
+		csvService.writeCSV(table,csvFile.toString());
 		//ler o conteudo e verificar se esta tudo correto
 		String content = Files.readString(csvFile);
 		String expected = "PROCEDIMENTO,RN (alteração),VIGÊNCIA,Seg. Odontológica,Seg. Ambulatorial,HCO,HSO,REF,PAC,DUT,SUBGRUPO,GRUPO,CAPÍTULO\n"
