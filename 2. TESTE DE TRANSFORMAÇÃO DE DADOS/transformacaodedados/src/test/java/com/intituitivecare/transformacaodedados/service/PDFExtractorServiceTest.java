@@ -7,10 +7,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.assertj.core.util.Arrays;
 import org.junit.jupiter.api.Test;
+
+import com.intituitivecare.transformacaodedados.abbreviations.Abbreviations;
 
 public class PDFExtractorServiceTest {
 	@Test
@@ -21,7 +24,10 @@ public class PDFExtractorServiceTest {
 		// instanciar servico de extracao
 		PDFExtractorService pdfExtractorService = new PDFExtractorService();
 		// extrair dados da tabela
-		List<List<String>> tableData = pdfExtractorService.extractTableData(anexo);
+		List<Abbreviations> abbreviations = new ArrayList<>();
+		abbreviations.add(Abbreviations.OD);
+		abbreviations.add(Abbreviations.AMB);
+		List<List<String>> tableData = pdfExtractorService.extractTableData(anexo, abbreviations);
 		
 		assertNotNull(tableData, "A lista de dados não deve ser nula");
         assertFalse(tableData.isEmpty(), "A lista de dados não deve estar vazia");
