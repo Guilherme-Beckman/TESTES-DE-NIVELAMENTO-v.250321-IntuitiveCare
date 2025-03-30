@@ -1,5 +1,6 @@
 package com.intituitivecare.transformacaodedados.service;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -8,6 +9,7 @@ import java.io.File;
 import java.net.URISyntaxException;
 import java.util.List;
 
+import org.assertj.core.util.Arrays;
 import org.junit.jupiter.api.Test;
 
 public class PDFExtractorServiceTest {
@@ -19,13 +21,28 @@ public class PDFExtractorServiceTest {
 		// instanciar servico de extracao
 		PDFExtractorService pdfExtractorService = new PDFExtractorService();
 		// extrair dados da tabela
-		List<String[]> tableData = pdfExtractorService.extractTableData(anexo);
+		List<List<String>> tableData = pdfExtractorService.extractTableData(anexo);
 		
 		assertNotNull(tableData, "A lista de dados não deve ser nula");
         assertFalse(tableData.isEmpty(), "A lista de dados não deve estar vazia");
-        
-        String[] cabecalho = tableData.get(0);
-        assertTrue(cabecalho[0].contains("Procedimentos") || cabecalho[0].contains("Eventos"),
-                "O cabeçalho deve conter a palavra 'Procedimentos' ou 'Eventos'");
+        List<String> header = tableData.get(0);
+        assertEquals(13, header.size(), "A row header deve conter 13 celulas");
+        List<String> expectedList = List.of(
+        	    "PROCEDIMENTO, ", 
+        	    "RN (alteração), ", 
+        	    "VIGÊNCIA, ", 
+        	    "OD, ", 
+        	    "AMB, ", 
+        	    "HCO, ", 
+        	    "HSO, ", 
+        	    "REF, ", 
+        	    "PAC, ", 
+        	    "DUT, ", 
+        	    "SUBGRUPO, ", 
+        	    "GRUPO, ", 
+        	    "CAPÍTULO"
+        	);        assertTrue(header.containsAll(expectedList), "O header deve conter todos os elementos");
+
+
 	}
 }
