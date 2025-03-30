@@ -31,8 +31,8 @@ public class PDFExtractorServiceTest {
         	    "PROCEDIMENTO, ", 
         	    "RN (alteração), ", 
         	    "VIGÊNCIA, ", 
-        	    "OD, ", 
-        	    "AMB, ", 
+        	    "Seg. Odontológica, ", 
+        	    "Seg. Ambulatorial, ", 
         	    "HCO, ", 
         	    "HSO, ", 
         	    "REF, ", 
@@ -41,7 +41,8 @@ public class PDFExtractorServiceTest {
         	    "SUBGRUPO, ", 
         	    "GRUPO, ", 
         	    "CAPÍTULO"
-        	);        assertTrue(header.containsAll(expectedList), "O header deve conter todos os elementos");
+        	);
+        assertTrue(header.containsAll(expectedList), "O header deve conter todos os elementos");
 
 
 	}
