@@ -73,11 +73,7 @@ public class PDFExtractorService {
                                 }
                             }
                             
-                            if (h == cells.size() - 1) {
                                 rowTable.add(text); 
-                            } else {
-                                rowTable.add(text + ", "); 
-                            }
                         }
 
  
@@ -93,7 +89,7 @@ public class PDFExtractorService {
             e.printStackTrace();
         }
  
-        printTableData(tableData);
+        //printTableData(tableData);
         return tableData;
     }
  
@@ -102,7 +98,7 @@ public class PDFExtractorService {
         for (List<String> row : tableData) {
             for (int i = 0; i < row.size(); i++) {
                 String cell = row.get(i);
-                System.out.print(cell);
+                System.out.print(cell+" | ");
                 if (i < row.size() - 1) {
                 }
             }

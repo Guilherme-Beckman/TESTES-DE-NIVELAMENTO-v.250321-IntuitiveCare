@@ -34,18 +34,18 @@ public class PDFExtractorServiceTest {
         List<String> header = tableData.get(0);
         assertEquals(13, header.size(), "A row header deve conter 13 celulas");
         List<String> expectedList = List.of(
-        	    "PROCEDIMENTO, ", 
-        	    "RN (alteração), ", 
-        	    "VIGÊNCIA, ", 
-        	    "Seg. Odontológica, ", 
-        	    "Seg. Ambulatorial, ", 
-        	    "HCO, ", 
-        	    "HSO, ", 
-        	    "REF, ", 
-        	    "PAC, ", 
-        	    "DUT, ", 
-        	    "SUBGRUPO, ", 
-        	    "GRUPO, ", 
+        	    "PROCEDIMENTO", 
+        	    "RN (alteração)", 
+        	    "VIGÊNCIA", 
+        	    "Seg. Odontológica", 
+        	    "Seg. Ambulatorial", 
+        	    "HCO", 
+        	    "HSO", 
+        	    "REF", 
+        	    "PAC", 
+        	    "DUT", 
+        	    "SUBGRUPO", 
+        	    "GRUPO", 
         	    "CAPÍTULO"
         	);
         assertTrue(header.containsAll(expectedList), "O header deve conter todos os elementos");
