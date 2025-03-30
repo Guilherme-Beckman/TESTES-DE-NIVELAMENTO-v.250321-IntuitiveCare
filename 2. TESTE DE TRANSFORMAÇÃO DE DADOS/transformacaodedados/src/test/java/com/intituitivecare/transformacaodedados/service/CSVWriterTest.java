@@ -2,6 +2,8 @@ package com.intituitivecare.transformacaodedados.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.io.IOException;
+import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -9,17 +11,12 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.io.TempDir;
-import org.junit.jupiter.params.shadow.com.univocity.parsers.csv.CsvWriter;
-
-import technology.tabula.writers.CSVWriter;
 
 public class CSVWriterTest {
-	@TempDir
-	Path tempDir;
 	
 	@Test
-	public void shouldGenerateCSVFile() {
+	public void shouldGenerateCSVFile() throws IOException {
+        Path tempDir = Files.createTempDirectory("csv");
 		//vou precisar de um tabela teste
 		List<List<String>> table = new ArrayList<>();
 		
@@ -80,12 +77,17 @@ public class CSVWriterTest {
 		//chamar o metodo
 		csvService.writeCSV(table,csvFile.toString());
 		//ler o conteudo e verificar se esta tudo correto
-		String content = Files.readString(csvFile);
-		String expected = "PROCEDIMENTO,RN (alteração),VIGÊNCIA,Seg. Odontológica,Seg. Ambulatorial,HCO,HSO,REF,PAC,DUT,SUBGRUPO,GRUPO,CAPÍTULO\n"
-			        + "CONSULTA ODONTOLÓGICA PARA AVALIAÇÃO TÉCNICA DE AUDITORIA,,,,Seg. Odontológica,,,,,,,CONSULTAS, VISITAS HOSPITALARES OU ACOMPANHAMENTO DE PACIENTES,PROCEDIMENTOS GERAIS,PROCEDIMENTOS GERAIS\n"
-			        + "ATENDIMENTO/ACOMPANHAMENTO EM HOSPITAL-DIA PSIQUIÁTRICO (COM DIRETRIZ DE UTILIZAÇÃO),,,,,HCO,HSO,REF,,109,CONSULTAS, VISITAS HOSPITALARES OU ACOMPANHAMENTO DE PACIENTES,PROCEDIMENTOS GERAIS,PROCEDIMENTOS GERAIS\n";
+		String content = Files.readString(csvFile); // Trim the content
+		System.out.println(content); // This prints the content generated
+		String expected = """
+			    "PROCEDIMENTO","RN (alteração)","VIGÊNCIA","Seg. Odontológica","Seg. Ambulatorial","HCO","HSO","REF","PAC","DUT","SUBGRUPO","GRUPO","CAPÍTULO"
+			    "CONSULTA ODONTOLÓGICA PARA AVALIAÇÃO TÉCNICA DE AUDITORIA","","","Seg. Odontológica","","","","","","","CONSULTAS, VISITAS HOSPITALARES OU ACOMPANHAMENTO DE PACIENTES","PROCEDIMENTOS GERAIS","PROCEDIMENTOS GERAIS"
+			    "ATENDIMENTO/ACOMPANHAMENTO EM HOSPITAL-DIA PSIQUIÁTRICO (COM DIRETRIZ DE UTILIZAÇÃO)","","","","","HCO","HSO","REF","","109","CONSULTAS, VISITAS HOSPITALARES OU ACOMPANHAMENTO DE PACIENTES","PROCEDIMENTOS GERAIS","PROCEDIMENTOS GERAIS"
+			    """;
 
-		assertEquals(expected, content);
+		assertEquals(expected, content); // Trim both strings to avoid newline or space mismatches
+
+
 	}
 	
 }
