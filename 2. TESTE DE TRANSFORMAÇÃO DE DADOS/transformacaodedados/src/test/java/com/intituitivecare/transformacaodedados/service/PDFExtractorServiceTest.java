@@ -18,12 +18,9 @@ import com.intituitivecare.transformacaodedados.abbreviations.Abbreviations;
 public class PDFExtractorServiceTest {
 	@Test
 	public void shouldExtractData() throws URISyntaxException {
-		// pegar o pdf na pasta resources
 		File anexo = new File(getClass()
 				.getResource("/Anexo_I_Rol_2021RN_465.2021_RN627L.2024.pdf").toURI());
-		// instanciar servico de extracao
 		PDFExtractorService pdfExtractorService = new PDFExtractorService();
-		// extrair dados da tabela
 		List<Abbreviations> abbreviations = new ArrayList<>();
 		abbreviations.add(Abbreviations.OD);
 		abbreviations.add(Abbreviations.AMB);
