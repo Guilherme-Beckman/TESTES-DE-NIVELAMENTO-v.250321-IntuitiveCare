@@ -11,93 +11,120 @@ import org.apache.pdfbox.text.PDFTextStripper;
 import org.springframework.stereotype.Service;
 
 import com.intituitivecare.transformacaodedados.abbreviations.Abbreviations;
+import com.intituitivecare.transformacaodedados.exceptions.ErrorWhileExtractTableDataException;
 
-import technology.tabula.ObjectExtractor;
-import technology.tabula.Page;
-import technology.tabula.PageIterator;
-import technology.tabula.RectangularTextContainer;
-import technology.tabula.Table;
+import technology.tabula.*;
 import technology.tabula.extractors.SpreadsheetExtractionAlgorithm;
- 
+
 @Service
 public class PDFExtractorService {
 
-	 
-    public List<List<String>> extractTableData(File pdf, List<Abbreviations> abbreviations) {
-        List<List<String>> tableData = new ArrayList<>();
-        System.out.println("ta aqui dentro");
-        
-        try (PDDocument document = Loader.loadPDF(pdf)) {
-        	PDFTextStripper pdfTextStripper = new PDFTextStripper();
-        	pdfTextStripper.setStartPage(3); 
-            pdfTextStripper.setEndPage(3);
-        	String textPdf = pdfTextStripper.getText(document);
-            
-            Map<String, String> abbreviationsLegend = LegendExtractor.extractLegendMap(textPdf);
-            
-            
-            boolean headerProcessed = false; 
-            SpreadsheetExtractionAlgorithm sea = new SpreadsheetExtractionAlgorithm();
-            PageIterator pi = new ObjectExtractor(document).extract();
-            while (pi.hasNext()) {
-                Page page = pi.next();
-                List<Table> tables = sea.extract(page);
-                for (Table table : tables) {
-                    List<List<RectangularTextContainer>> rows = table.getRows();
- 
-                    for (int j = 0; j < rows.size(); j++) {
-                        if (headerProcessed && j == 0) {
-                            continue;
-                        }
- 
-                        List<RectangularTextContainer> cells = rows.get(j);
-                        if (cells.get(0).getText().isEmpty() || cells.get(0).getText().isBlank()) {
-                            continue;
-                        }
- 
-                        List<String> rowTable = new ArrayList<>();
-                        for (int h = 0; h < cells.size(); h++) {
-                            RectangularTextContainer cellContent = cells.get(h);
-                            String text = cellContent.getText().replace("\r", " ").trim();
-                            
-                            for (Abbreviations abbr : abbreviations) {
-                                if (text.equalsIgnoreCase(abbr.name())) {
-                                    if (abbreviationsLegend.containsKey(abbr.name())) {
-                                        text = abbreviationsLegend.get(abbr.name());
-                                    }
-                                }
-                            }
-                            
-                                rowTable.add(text); 
-                        }
+    private static final int TARGET_PAGE_NUMBER = 3;
+    private static final String LINE_SEPARATOR = " | ";
 
- 
-                        if (!headerProcessed && j == 0) {
-                            headerProcessed = true;
-                        }
- 
-                        tableData.add(rowTable);
-                    }
-                }
-            }
+    public List<List<String>> extractTableData(File pdfFile, List<Abbreviations> abbreviations) {
+        List<List<String>> tableData = new ArrayList<>();
+
+        try (PDDocument document = Loader.loadPDF(pdfFile)) {
+            String pageText = extractPageText(document, TARGET_PAGE_NUMBER);
+            Map<String, String> abbreviationsLegend = LegendExtractor.extractLegendMap(pageText);
+
+            processDocumentPages(document, tableData, abbreviations, abbreviationsLegend);
         } catch (Exception e) {
-            e.printStackTrace();
+        	throw new ErrorWhileExtractTableDataException();
         }
- 
-        printTableData(tableData);
+
+        //logTableData(tableData);
         return tableData;
     }
- 
-    private void printTableData(List<List<String>> tableData) {
- 
-        for (List<String> row : tableData) {
-            for (int i = 0; i < row.size(); i++) {
-                String cell = row.get(i);
-                System.out.print(cell+" | ");
-                if (i < row.size() - 1) {
-                }
+
+    private String extractPageText(PDDocument document, int pageNumber) throws Exception {
+        PDFTextStripper textStripper = new PDFTextStripper();
+        textStripper.setStartPage(pageNumber);
+        textStripper.setEndPage(pageNumber);
+        return textStripper.getText(document);
+    }
+
+    private void processDocumentPages(PDDocument document, List<List<String>> tableData,
+                                     List<Abbreviations> abbreviations, Map<String, String> abbreviationsLegend) {
+        SpreadsheetExtractionAlgorithm spreadsheetExtractor = new SpreadsheetExtractionAlgorithm();
+        PageIterator pageIterator = new ObjectExtractor(document).extract();
+        boolean isHeaderProcessed = false;
+
+        while (pageIterator.hasNext()) {
+            Page currentPage = pageIterator.next();
+            processPageTables(currentPage, spreadsheetExtractor, tableData, 
+                             abbreviations, abbreviationsLegend, isHeaderProcessed);
+        }
+    }
+
+    private void processPageTables(Page page, SpreadsheetExtractionAlgorithm extractor,
+                                  List<List<String>> tableData, List<Abbreviations> abbreviations,
+                                  Map<String, String> abbreviationsLegend, boolean isHeaderProcessed) {
+        List<Table> tables = extractor.extract(page);
+        
+        for (Table table : tables) {
+            processTableRows(table.getRows(), tableData, abbreviations, 
+                            abbreviationsLegend, isHeaderProcessed);
+        }
+    }
+
+    private void processTableRows(List<List<RectangularTextContainer>> tableRows, List<List<String>> tableData,
+                                 List<Abbreviations> abbreviations, Map<String, String> abbreviationsLegend,
+                                 boolean isHeaderProcessed) {
+        boolean headerProcessed = isHeaderProcessed;
+        
+        for (int rowIndex = 0; rowIndex < tableRows.size(); rowIndex++) {
+            List<RectangularTextContainer> rowCells = tableRows.get(rowIndex);
+            
+            if (shouldSkipRow(headerProcessed, rowIndex, rowCells)) {
+                continue;
             }
-            System.out.println();
+
+            List<String> processedRow = processRowCells(rowCells, abbreviations, abbreviationsLegend);
+            tableData.add(processedRow);
+            
+            if (!headerProcessed && rowIndex == 0) {
+                headerProcessed = true;
+            }
+        }
+    }
+
+    private boolean shouldSkipRow(boolean headerProcessed, int rowIndex, List<RectangularTextContainer> rowCells) {
+        return (headerProcessed && rowIndex == 0) || 
+               rowCells.get(0).getText().isBlank();
+    }
+
+    private List<String> processRowCells(List<RectangularTextContainer> rowCells,
+                                        List<Abbreviations> abbreviations,
+                                        Map<String, String> abbreviationsLegend) {
+        List<String> processedRow = new ArrayList<>();
+        
+        for (RectangularTextContainer cell : rowCells) {
+            String cellContent = cleanCellContent(cell.getText());
+            processedRow.add(resolveAbbreviations(cellContent, abbreviations, abbreviationsLegend));
+        }
+        
+        return processedRow;
+    }
+
+    private String cleanCellContent(String rawContent) {
+        return rawContent.replace("\r", " ")
+                         .trim();
+    }
+
+    private String resolveAbbreviations(String text, List<Abbreviations> abbreviations,
+                                        Map<String, String> abbreviationsLegend) {
+        for (Abbreviations abbreviation : abbreviations) {
+            if (text.equalsIgnoreCase(abbreviation.name())) {
+                return abbreviationsLegend.getOrDefault(abbreviation.name(), text);
+            }
+        }
+        return text;
+    }
+    private void logTableData(List<List<String>> tableData) {
+        for (List<String> row : tableData) {
+            System.out.println(String.join(LINE_SEPARATOR, row));
         }
     }
 }
