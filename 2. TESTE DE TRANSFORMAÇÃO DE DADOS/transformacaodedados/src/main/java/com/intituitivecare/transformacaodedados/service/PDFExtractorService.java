@@ -25,9 +25,7 @@ public class PDFExtractorService {
 	 
     public List<List<String>> extractTableData(File pdf, List<Abbreviations> abbreviations) {
         List<List<String>> tableData = new ArrayList<>();
-        
-        
-        
+        System.out.println("ta aqui dentro");
         
         try (PDDocument document = Loader.loadPDF(pdf)) {
         	PDFTextStripper pdfTextStripper = new PDFTextStripper();
@@ -41,9 +39,7 @@ public class PDFExtractorService {
             boolean headerProcessed = false; 
             SpreadsheetExtractionAlgorithm sea = new SpreadsheetExtractionAlgorithm();
             PageIterator pi = new ObjectExtractor(document).extract();
-            int i = 0;
-            while (pi.hasNext() && i<3) {
-            	i++;
+            while (pi.hasNext()) {
                 Page page = pi.next();
                 List<Table> tables = sea.extract(page);
                 for (Table table : tables) {
@@ -66,7 +62,6 @@ public class PDFExtractorService {
                             
                             for (Abbreviations abbr : abbreviations) {
                                 if (text.equalsIgnoreCase(abbr.name())) {
-                                    // Se o mapa da legenda possuir o valor, substitui
                                     if (abbreviationsLegend.containsKey(abbr.name())) {
                                         text = abbreviationsLegend.get(abbr.name());
                                     }
@@ -89,7 +84,7 @@ public class PDFExtractorService {
             e.printStackTrace();
         }
  
-        //printTableData(tableData);
+        printTableData(tableData);
         return tableData;
     }
  
