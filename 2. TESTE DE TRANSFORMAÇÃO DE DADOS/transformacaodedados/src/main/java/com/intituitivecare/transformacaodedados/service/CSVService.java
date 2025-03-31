@@ -7,13 +7,14 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.intituitivecare.transformacaodedados.exceptions.ErrorWhileWriteCSVException;
+
 @Service
 public class CSVService {
 
 	public void writeCSV(List<List<String>> tableData, String filePath) {
         try (FileWriter csvWriter = new FileWriter(filePath)) {
             for (List<String> row : tableData) {
-                // Se houver vírgulas no conteúdo, é recomendável encapsular o valor entre aspas
                 List<String> formattedCells = new ArrayList<>();
                 for (String cell : row) {
                         formattedCells.add("\"" + cell + "\"");
@@ -23,7 +24,7 @@ public class CSVService {
             }
             csvWriter.flush();
         } catch (IOException e) {
-            e.printStackTrace();
+        	throw new ErrorWhileWriteCSVException();
         }
     }
 
