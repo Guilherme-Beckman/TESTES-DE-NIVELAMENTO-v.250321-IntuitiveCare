@@ -30,6 +30,31 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "Test 2",
+			"item": [
+				{
+					"name": "Get Zip File",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/zip",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"zip"
+							]
+						},
+						"description": "## Endpoint: `/zip`\n\n### Método HTTP\n\n**GET**\n\n### Descrição\n\nEste endpoint permite que o cliente faça o download de um arquivo ZIP gerado pelo serviço. O arquivo contém os resultados de um processo, que pode incluir múltiplos arquivos coletados e compactados. O endpoint utiliza o serviço interno **ZipService** para gerar e retornar o arquivo ZIP.\n\n### URL\n\n```\nhttp://localhost:8080/zip\n\n ```\n\n### Parâmetros da Requisição\n\n- **Nenhum** parâmetro é necessário na URL ou no corpo da requisição.\n    \n\n### Exemplo de Requisição\n\n``` bash\nGET http://localhost:8080/zip\n\n ```\n\n### Resposta\n\n#### Código de Status\n\n- **200 OK** – Requisição realizada com sucesso.\n    \n\n#### Corpo da Resposta\n\n- O corpo da resposta contém o arquivo ZIP solicitado, enviado como um anexo de download.\n    \n\n#### Headers de Resposta\n\n- attachment; filename=Teste_Guilherme_Beckman.zip\n    \n- application/octet-stream\n    \n- **Content-Length:** Tamanho do arquivo em bytes. (valor dinâmico conforme o arquivo gerado)\n    \n\n#### Exemplo de Resposta HTTP\n\n```\nHTTP/1.1 200 OK\nContent-Disposition: attachment; filename=arquivo.zip\nContent-Type: application/octet-stream\nContent-Length: <tamanho_do_arquivo>\n<corpo contendo o arquivo ZIP>\n\n ```\n\n### Serviço Interno Utilizado\n\n- **ZipService:**\n    \n    Este serviço é responsável por:\n    \n    - Extrair dados de um arquivo PDF utilizando o **PDFExtractorService**.\n        \n    - Gerar um arquivo CSV a partir dos dados extraídos via **CSVService**.\n        \n    - Compactar os arquivos gerados em um único arquivo ZIP utilizando o **CompressorService**.\n        \n\n### Notas Importantes\n\n- O arquivo ZIP gerado pode conter múltiplos arquivos que foram compactados.\n    \n- O download é iniciado automaticamente no navegador ou no cliente HTTP, pois o arquivo é enviado como um anexo.\n    \n- Em caso de falha na geração do arquivo, o servidor pode retornar um erro **500 Internal Server Error**.\n    \n\n---\n\nEsta documentação fornece uma visão completa sobre o funcionamento do endpoint `/zip`, detalhando desde a requisição até os componentes internos envolvidos na geração do arquivo ZIP."
+					},
+					"response": []
+				}
+			]
 		}
 	]
 }
