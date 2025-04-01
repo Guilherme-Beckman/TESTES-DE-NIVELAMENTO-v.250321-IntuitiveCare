@@ -54,7 +54,3 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE TRIGGER before_insert_demonstracoes
-BEFORE INSERT ON demonstracoes_contabeis
-FOR EACH ROW
-EXECUTE FUNCTION trg_set_reg_ans_default();
