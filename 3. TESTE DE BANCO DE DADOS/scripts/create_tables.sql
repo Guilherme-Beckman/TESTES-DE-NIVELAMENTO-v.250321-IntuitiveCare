@@ -42,3 +42,19 @@ VALUES (
     'Sem CEP', '000', 'Sem Telefone', 'Sem Fax', 'Sem Endereço Eletrônico',
     'Sem Representante', 'Sem Cargo Representante', 0, '2023-10-10'
 );
+CREATE OR REPLACE FUNCTION trg_set_reg_ans_default()
+RETURNS trigger AS $$
+BEGIN
+  IF NOT EXISTS (
+    SELECT 1 FROM operadoras WHERE registro_ans = NEW.reg_ans
+  ) THEN
+    NEW.reg_ans := 'Sem Registro';
+  END IF;
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER before_insert_demonstracoes
+BEFORE INSERT ON demonstracoes_contabeis
+FOR EACH ROW
+EXECUTE FUNCTION trg_set_reg_ans_default();
