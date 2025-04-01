@@ -1,0 +1,85 @@
+{
+	"info": {
+		"_postman_id": "0af42d87-f1d7-4f54-9739-a93ecc634a8e",
+		"name": "Testes de nivelamento Intuitive Care",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "31833083"
+	},
+	"item": [
+		{
+			"name": "Teste 1",
+			"item": [
+				{
+					"name": "Get Zip Files",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/zip",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"zip"
+							]
+						},
+						"description": "### **Endpoint**: `/zip`\n\n#### **Método HTTP**: `GET`\n\n#### **Descrição**:\n\nEste endpoint permite que o cliente faça o download de um arquivo ZIP gerado pelo serviço. O arquivo contém os resultados de um processo, como um conjunto de arquivos coletados e compactados em formato ZIP.\n\n#### **URL**: `http://localhost:8080/zip`\n\n#### **Parâmetros da Requisição**:\n\n- **Nenhum parâmetro na URL** ou no **corpo da requisição**.\n    \n\n#### **Exemplo de Requisição**:\n\n``` bash\nGET http://localhost:8080/zip\n\n ```\n\n#### **Resposta**:\n\n- **Código de Status**: `200 OK`\n    \n- **Corpo da Resposta**: O corpo da resposta contém o arquivo ZIP solicitado como um anexo de download.\n    \n\n#### **Headers de Resposta**:\n\n- `Content-Disposition`: Define o arquivo como anexo e especifica o nome do arquivo a ser baixado. Exemplo: `attachment; filename=nome_do_arquivo.zip`\n    \n- `Content-Type`: Especifica o tipo de mídia do conteúdo como `application/octet-stream`, que indica que o arquivo é binário.\n    \n\n#### **Exemplo de Resposta**:\n\n``` http\nHTTP/1.1 200 OK\nContent-Disposition: attachment; filename=arquivo.zip\nContent-Type: application/octet-stream\nContent-Length: <tamanho_do_arquivo>\n\n ```\n\nO corpo da resposta conterá o arquivo compactado em formato ZIP.\n\n#### **Serviço Interno Utilizado**:\n\nO endpoint utiliza o `ZipService`, que é responsável por gerar e retornar o arquivo ZIP a ser baixado.\n\n#### **Notas**:\n\n- O arquivo gerado pode conter múltiplos arquivos que foram compactados em um único ZIP.\n    \n- O download será iniciado automaticamente no navegador ou outro cliente HTTP, já que o arquivo é enviado como um anexo.\n    \n\n#### **Erros Potenciais**:\n\n- `500 Internal Server Error`: Caso ocorra algum erro ao gerar o arquivo ZIP no servidor."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Teste 2",
+			"item": [
+				{
+					"name": "Get Zip File",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/zip",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"zip"
+							]
+						},
+						"description": "## Endpoint: `/zip`\n\n### Método HTTP\n\n**GET**\n\n### Descrição\n\nEste endpoint permite que o cliente faça o download de um arquivo ZIP gerado pelo serviço. O arquivo contém os resultados de um processo, que pode incluir múltiplos arquivos coletados e compactados. O endpoint utiliza o serviço interno **ZipService** para gerar e retornar o arquivo ZIP.\n\n### URL\n\n```\nhttp://localhost:8080/zip\n\n ```\n\n### Parâmetros da Requisição\n\n- **Nenhum** parâmetro é necessário na URL ou no corpo da requisição.\n    \n\n### Exemplo de Requisição\n\n``` bash\nGET http://localhost:8080/zip\n\n ```\n\n### Resposta\n\n#### Código de Status\n\n- **200 OK** – Requisição realizada com sucesso.\n    \n\n#### Corpo da Resposta\n\n- O corpo da resposta contém o arquivo ZIP solicitado, enviado como um anexo de download.\n    \n\n#### Headers de Resposta\n\n- attachment; filename=Teste_Guilherme_Beckman.zip\n    \n- application/octet-stream\n    \n- **Content-Length:** Tamanho do arquivo em bytes. (valor dinâmico conforme o arquivo gerado)\n    \n\n#### Exemplo de Resposta HTTP\n\n```\nHTTP/1.1 200 OK\nContent-Disposition: attachment; filename=arquivo.zip\nContent-Type: application/octet-stream\nContent-Length: <tamanho_do_arquivo>\n<corpo contendo o arquivo ZIP>\n\n ```\n\n### Serviço Interno Utilizado\n\n- **ZipService:**\n    \n    Este serviço é responsável por:\n    \n    - Extrair dados de um arquivo PDF utilizando o **PDFExtractorService**.\n        \n    - Gerar um arquivo CSV a partir dos dados extraídos via **CSVService**.\n        \n    - Compactar os arquivos gerados em um único arquivo ZIP utilizando o **CompressorService**.\n        \n\n### Notas Importantes\n\n- O arquivo ZIP gerado pode conter múltiplos arquivos que foram compactados.\n    \n- O download é iniciado automaticamente no navegador ou no cliente HTTP, pois o arquivo é enviado como um anexo.\n    \n- Em caso de falha na geração do arquivo, o servidor pode retornar um erro **500 Internal Server Error**.\n    \n\n---\n\nEsta documentação fornece uma visão completa sobre o funcionamento do endpoint `/zip`, detalhando desde a requisição até os componentes internos envolvidos na geração do arquivo ZIP."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Teste 4",
+			"item": [
+				{
+					"name": "Get Information from CSV",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/zip",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"zip"
+							]
+						},
+						"description": "## Endpoint: `/zip`\n\n### Método HTTP\n\n**GET**\n\n### DescriçãoA documentação a seguir detalha o funcionamento do endpoint `/search` implementado no código Python fornecido.\n\n**Endpoint:** `/search`\n\n**Método HTTP:** `GET`\n\n**Descrição:**  \nEste endpoint permite que o cliente realize uma busca nos dados carregados a partir de um arquivo CSV. A busca é realizada em todas as colunas do DataFrame carregado, retornando registros que contenham o termo de busca especificado.\n\n**URL:**\n\n```\nhttp://localhost:5000/search\n\n ```\n\n**Parâmetros da Requisição:**\n\n- `query` (string): Termo de busca a ser procurado nos dados. Este parâmetro é obrigatório.\n    \n\n**Exemplo de Requisição:**\n\n```\nGET http://localhost:5000/search?query=termo_de_busca\n\n ```\n\n**Resposta:**\n\n- **Código de Status:**\n    \n    - `200 OK` – Requisição realizada com sucesso.\n        \n    - `400 Bad Request` – Caso o parâmetro `query` não seja fornecido.\n        \n- **Corpo da Resposta:**  \n    Uma lista de objetos JSON, onde cada objeto representa um registro que corresponde ao termo de busca. Se nenhum registro for encontrado, uma lista vazia é retornada.\n    \n- **Headers de Resposta:**\n    \n    - `Content-Type: application/json`\n        \n    - `Content-Length:`\n        \n\n**Exemplo de Resposta HTTP:**\n\n``` json\nHTTP/1.1 200 OK\nContent-Type: application/json\nContent-Length: 123\n[\n    {\n        \"Bairro\": \"Centro\",\n        \"CEP\": 12345678,\n        \"CNPJ\": 12345678000190,\n        \"Cargo_Representante\": \"Diretor\",\n        \"Cidade\": \"São Paulo\",\n        \"Complemento\": null,\n        \"DDD\": 11,\n        \"Data_Registro_ANS\": \"2025-03-15\",\n        \"Endereco_eletronico\": \"contato@empresa.com.br\",\n        \"Fax\": null,\n        \"Logradouro\": \"Avenida Paulista\",\n        \"Modalidade\": \"Operadora\",\n        \"Nome_Fantasia\": \"Empresa Saúde\",\n        \"Numero\": \"1000\",\n        \"Razao_Social\": \"Empresa Saúde S/A\",\n        \"Regiao_de_Comercializacao\": 1,\n        \"Registro_ANS\": 123456,\n        \"Representante\": \"João Silva\",\n        \"Telefone\": 987654321,\n        \"UF\": \"SP\"\n    }\n]\n\n ```\n\n**Serviços Internos Utilizados:**\n\n- **Função** **`load_csv(filepath: str) -> pd.DataFrame`****:**  \n    Carrega os dados de um arquivo CSV especificado pelo parâmetro `filepath`. Utiliza o separador `;` e codificação `utf-8`. Em caso de falha ao carregar o arquivo, registra um erro no log e retorna um DataFrame vazio.\n    \n- **DataFrame** **`df`****:**  \n    Armazena os dados carregados pelo `load_csv` a partir do arquivo `Relatorio_cadop.csv`. Este DataFrame é utilizado para realizar as buscas solicitadas pelo cliente.\n    \n\n**Notas Importantes:**\n\n- A busca é realizada convertendo todas as células do DataFrame para strings em minúsculas e verificando se o termo de busca está contido em alguma célula.\n    \n- Valores `NaN` no DataFrame são substituídos por `None` antes de serem convertidos para JSON, garantindo que sejam representados como `null` na resposta.\n    \n- O servidor Flask é iniciado na porta 5000 em modo de depuração (`debug=True`).\n    \n\nEsta documentação fornece uma visão detalhada sobre o funcionamento do endpoint `/search`, abrangendo desde a requisição até os componentes internos envolvidos no processamento da busca.\n\nEste endpoint permite que o cliente faça o download de um arquivo ZIP gerado pelo serviço. O arquivo contém os resultados de um processo, que pode incluir múltiplos arquivos coletados e compactados. O endpoint utiliza o serviço interno **ZipService** para gerar e retornar o arquivo ZIP.\n\n### URL\n\n```\nhttp://localhost:8080/zip\n\n ```\n\n### Parâmetros da Requisição\n\n- **Nenhum** parâmetro é necessário na URL ou no corpo da requisição.\n    \n\n### Exemplo de Requisição\n\n``` bash\nGET http://localhost:8080/zip\n\n ```\n\n### Resposta\n\n#### Código de Status\n\n- **200 OK** – Requisição realizada com sucesso.\n    \n\n#### Corpo da Resposta\n\n- O corpo da resposta contém o arquivo ZIP solicitado, enviado como um anexo de download.\n    \n\n#### Headers de Resposta\n\n- attachment; filename=Teste_Guilherme_Beckman.zip\n    \n- application/octet-stream\n    \n- **Content-Length:** Tamanho do arquivo em bytes. (valor dinâmico conforme o arquivo gerado)\n    \n\n#### Exemplo de Resposta HTTP\n\n```\nHTTP/1.1 200 OK\nContent-Disposition: attachment; filename=arquivo.zip\nContent-Type: application/octet-stream\nContent-Length: <tamanho_do_arquivo>\n<corpo contendo o arquivo ZIP>\n\n ```\n\n### Serviço Interno Utilizado\n\n- **ZipService:**\n    \n    Este serviço é responsável por:\n    \n    - Extrair dados de um arquivo PDF utilizando o **PDFExtractorService**.\n        \n    - Gerar um arquivo CSV a partir dos dados extraídos via **CSVService**.\n        \n    - Compactar os arquivos gerados em um único arquivo ZIP utilizando o **CompressorService**.\n        \n\n### Notas Importantes\n\n- O arquivo ZIP gerado pode conter múltiplos arquivos que foram compactados.\n    \n- O download é iniciado automaticamente no navegador ou no cliente HTTP, pois o arquivo é enviado como um anexo.\n    \n- Em caso de falha na geração do arquivo, o servidor pode retornar um erro **500 Internal Server Error**.\n    \n\n---"
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
