@@ -20,7 +20,6 @@ CREATE TABLE operadoras (
     regiao_comercializacao INTEGER,
     data_registro_ans DATE
 );
-
 CREATE TABLE demonstracoes_contabeis (
     id SERIAL PRIMARY KEY,
     data DATE,
@@ -36,3 +35,10 @@ CREATE INDEX idx_demonstracoes_reg_ans ON demonstracoes_contabeis(reg_ans);
 CREATE INDEX idx_demonstracoes_conta ON demonstracoes_contabeis(cd_conta_contabil);
 CREATE INDEX idx_demonstracoes_data ON demonstracoes_contabeis(data);
 
+INSERT INTO operadoras (registro_ans, cnpj, razao_social, nome_fantasia, modalidade, logradouro, numero, complemento, bairro, cidade, uf, cep, ddd, telefone, fax, endereco_eletronico, representante, cargo_representante, regiao_comercializacao, data_registro_ans)
+VALUES (
+    'Sem Registro', 'Sem CNPJ', 'Sem Razão Social', 'Sem Nome Fantasia', 'Sem Modalidade',
+    'Sem Logradouro', 'Sem Número', 'Sem Complemento', 'Sem Bairro', 'Sem Cidade', 'UF',
+    'Sem CEP', '000', 'Sem Telefone', 'Sem Fax', 'Sem Endereço Eletrônico',
+    'Sem Representante', 'Sem Cargo Representante', 0, '2023-10-10'
+);
