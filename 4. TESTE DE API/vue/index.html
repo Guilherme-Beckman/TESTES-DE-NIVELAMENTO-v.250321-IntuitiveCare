@@ -102,7 +102,6 @@
           searched.value = true;
           
           try {
-            // Using axios params to build the query
             const { data } = await axios.get(API_URL, {
               params: { query: searchQuery.value }
             });
