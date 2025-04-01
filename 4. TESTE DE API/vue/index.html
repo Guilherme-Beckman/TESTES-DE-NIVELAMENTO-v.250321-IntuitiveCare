@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Operator Search</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.3.4/vue.global.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.4.0/axios.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .search-container {
+      margin-bottom: 20px;
+    }
+    input {
+      padding: 8px;
+      width: 300px;
+      margin-right: 10px;
+    }
+    button {
+      padding: 8px 16px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+    tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <h1>Operator Search</h1>
+    <div class="search-container">
+      <input 
+        type="text" 
+        v-model="searchQuery" 
+        placeholder="Search operators..." 
+        @keyup.enter="searchOperators"
+      >
+      <button @click="searchOperators">Search</button>
+    </div>
+    
+    <div v-if="loading">Loading...</div>
+    <div v-if="error" class="error">{{ error }}</div>
+    
+    <div v-if="results.length > 0">
+      <h2>Results ({{ results.length }} found)</h2>
+      <table>
+        <thead>
+          <tr>
+            <th v-for="(value, key) in results[0]" :key="key">{{ key }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(result, index) in results" :key="index">
+            <td v-for="(value, key) in result" :key="key">{{ value }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div v-else-if="!loading && searched">
+      <p>No results found</p>
+    </div>
+  </div>
+
+  <script>
+    const { createApp, ref } = Vue;
+    
+    createApp({
+      setup() {
+        const searchQuery = ref('');
+        const results = ref([]);
+        const loading = ref(false);
+        const error = ref('');
+        const searched = ref(false);
+        
+        const API_URL = 'http://localhost:5000/search';
+
+        const searchOperators = async () => {
+          if (!searchQuery.value.trim()) return;
+          
+          loading.value = true;
+          error.value = '';
+          searched.value = true;
+          
+          try {
+            // Using axios params to build the query
+            const { data } = await axios.get(API_URL, {
+              params: { query: searchQuery.value }
+            });
+            results.value = data;
+          } catch (err) {
+            console.error('Error:', err);
+            error.value = 'Failed to fetch results. Please ensure the server is running.';
+            results.value = [];
+          } finally {
+            loading.value = false;
+          }
+        };
+        
+        return { searchQuery, results, loading, error, searched, searchOperators };
+      }
+    }).mount('#app');
+  </script>
+</body>
+</html>
