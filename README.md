@@ -92,14 +92,16 @@ psql -U seu_usuario -d seu_banco -f "3. TESTE DE BANCO DE DADOS/scripts/script.s
 **Linux/macOS:**
 ```sh
 cd "4. TESTE DE API"
-source fresh_venv/bin/activate
+python3 -m venv venv
+source venv/bin/activate
 pip install flask pandas flask-cors
 ```
 
 **Windows:**
 ```sh
 cd "4. TESTE DE API"
-fresh_venv\Scripts\activate
+python -m venv venv
+venv\Scripts\activate
 pip install flask pandas flask-cors
 ```
 
