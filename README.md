@@ -17,8 +17,23 @@ git clone https://github.com/Guilherme-Beckman/TESTES-DE-NIVELAMENTO-v.250321-In
 - Postman (para testar as requisições, coleções disponíveis na pasta do teste)
 
 ### Executando o Teste
+#### Para Linux/macOS:  
 ```sh
-cd "1. TESTE DE WEB SCRAPING"
+cd "1. TESTE DE WEB SCRAPING/webscraping"
+mvn clean install
+mvn spring-boot:run
+```
+
+#### Para Windows (cmd):  
+```bat
+cd "1. TESTE DE WEB SCRAPING\webscraping"
+mvn clean install
+mvn spring-boot:run
+```
+
+#### Para Windows (PowerShell):  
+```powershell
+Set-Location "1. TESTE DE WEB SCRAPING\webscraping"
 mvn clean install
 mvn spring-boot:run
 ```
@@ -42,12 +57,27 @@ mvn spring-boot:run
 - Postman (coleções disponíveis na pasta do teste)
 
 ### Executando o Teste
+
+#### Para Linux/macOS:
 ```sh
-cd "2. TESTE DE TRANSFORMAÇÃO DE DADOS"
+cd "2. TESTE DE TRANSFORMAÇÃO DE DADOS/transformacaodedados"
 mvn clean install
 mvn spring-boot:run
 ```
 
+#### Para Windows (cmd):
+```bat
+cd "2. TESTE DE TRANSFORMAÇÃO DE DADOS\transformacaodedados"
+mvn clean install
+mvn spring-boot:run
+```
+
+#### Para Windows (PowerShell):
+```powershell
+Set-Location "2. TESTE DE TRANSFORMAÇÃO DE DADOS\transformacaodedados"
+mvn clean install
+mvn spring-boot:run
+```
 ### Testando com Postman
 - **Endpoint:** `GET http://localhost:8080/zip`
 - **Descrição:** Retorna um arquivo ZIP contendo os dados transformados
@@ -59,7 +89,7 @@ mvn spring-boot:run
   ```
 
 ### Estrutura de Arquivos Resultante do Teste 2
-Como foi solicitado na descrição dos testes, o arquivo contendo os arquivos zipados está em:
+Como foi solicitado na descrição dos testes, o arquivo zipado:
 
 ```
 TESTES-DE-NIVELAMENTO-v.250321-IntuitiveCare/
@@ -70,16 +100,47 @@ TESTES-DE-NIVELAMENTO-v.250321-IntuitiveCare/
 ---
 
 ## Teste 3: Banco de Dados (PostgreSQL)
+
 ### Requisitos
-- PostgreSQL instalado e rodando
-- Permissão de escrita na pasta `/tmp/teste-3/`
-- Os arquivos CSV devem estar localizados na pasta correta
+
+- **PostgreSQL 10+ instalado e rodando.**
+- O PostgreSQL deve conseguir acessar a pasta `/tmp/teste-3/`.
+- **Criação das pastas necessárias:**
+
+  - **Linux/macOS:**
+    ```sh
+    mkdir -p /tmp/teste-3/"Dados cadastrais das Operadoras Ativas na ANS"
+    mkdir -p /tmp/teste-3/"Arquivos dos últimos 2 anos do repositório"
+    ```
+  
+  - **Windows (cmd):**  
+    *(Observação: No Windows, recomenda-se adaptar o caminho para uma pasta local, por exemplo, `C:\tmp\teste-3\`.)*
+    ```bat
+    mkdir "C:\tmp\teste-3\Dados cadastrais das Operadoras Ativas na ANS"
+    mkdir "C:\tmp\teste-3\Arquivos dos últimos 2 anos do repositório"
+    ```
+
+- Os arquivos CSV devem estar localizados nos seguintes caminhos:
+  - `/tmp/teste-3/Dados cadastrais das Operadoras Ativas na ANS/Relatorio_cadop.csv`
+  - `/tmp/teste-3/Arquivos dos últimos 2 anos do repositório/1T2023.csv`
+  - `/tmp/teste-3/Arquivos dos últimos 2 anos do repositório/2T2023.csv`
+  - `/tmp/teste-3/Arquivos dos últimos 2 anos do repositório/3T2023.csv`
+  - `/tmp/teste-3/Arquivos dos últimos 2 anos do repositório/4T2023.csv`
+  - `/tmp/teste-3/Arquivos dos últimos 2 anos do repositório/1T2024.csv`
+  - `/tmp/teste-3/Arquivos dos últimos 2 anos do repositório/2T2024.csv`
+  - `/tmp/teste-3/Arquivos dos últimos 2 anos do repositório/3T2024.csv`
+  - `/tmp/teste-3/Arquivos dos últimos 2 anos do repositório/4T2024.csv`
 
 ### Executando os Scripts SQL
-```sh
-psql -U seu_usuario -d seu_banco -f "3. TESTE DE BANCO DE DADOS/scripts/script.sql"
-```
 
+```sh
+psql -U postgres -c "CREATE DATABASE teste3_db;"
+
+psql -U postgres -d teste3_db -f "3. TESTE DE BANCO DE DADOS/scripts/create_tables.sql"
+psql -U postgres -d teste3_db -f "3. TESTE DE BANCO DE DADOS/scripts/import_data.sql"
+psql -U postgres -d teste3_db -f "3. TESTE DE BANCO DE DADOS/scripts/top_10_ano.sql"
+psql -U postgres -d teste3_db -f "3. TESTE DE BANCO DE DADOS/scripts/top_10_trimestre.sql"
+```
 ---
 
 ## Teste 4: API (Python + Vue.js + Postman)
@@ -91,7 +152,7 @@ psql -U seu_usuario -d seu_banco -f "3. TESTE DE BANCO DE DADOS/scripts/script.s
 ### Configuração do Ambiente Python
 **Linux/macOS:**
 ```sh
-cd "4. TESTE DE API"
+cd "4. TESTE DE API/api-test"
 python3 -m venv venv
 source venv/bin/activate
 pip install flask pandas flask-cors
@@ -99,7 +160,7 @@ pip install flask pandas flask-cors
 
 **Windows:**
 ```sh
-cd "4. TESTE DE API"
+cd "4. TESTE DE API/api-test"
 python -m venv venv
 venv\Scripts\activate
 pip install flask pandas flask-cors
